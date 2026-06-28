@@ -1,9 +1,11 @@
 using System;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,12 +44,29 @@ public partial class App : Application
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .Build();
+
+        // Resolve the database and log file to an absolute, per-user, writable location.
+        // The connection string / log path in appsettings.json are relative, and a relative
+        // SQLite "Data Source" (and the relative log path) are resolved against the process'
+        // current working directory. That directory differs between a normal launch and an
+        // autostart launch, so the app would otherwise read/write a different database file
+        // each time, making profile changes appear not to persist (issues #41, #35, #32).
+        var dataDirectory = GetUserDataDirectory();
+        configuration["Logging:File:Path"] = Path.Combine(
+            dataDirectory,
+            configuration["Logging:File:Path"] ?? "YMouseButtonControl.log"
+        );
+        var connectionString = SqliteConnectionStringHelper.ToAbsolute(
+            configuration.GetConnectionString("YMouseButtonControlContext"),
+            dataDirectory
+        );
+
         var host = Host.CreateDefaultBuilder()
             .ConfigureServices(services =>
             {
                 services.UseMicrosoftDependencyResolver();
                 services.AddDbContext<YMouseButtonControlDbContext>(opts =>
-                    opts.UseSqlite(configuration.GetConnectionString("YMouseButtonControlContext"))
+                    opts.UseSqlite(connectionString)
                 );
                 services.AddScoped(_ => configuration);
                 //services.AddScoped<YMouseButtonControlDbContext>();
@@ -135,4 +154,22 @@ public partial class App : Application
         string? innerException,
         string? stackTrace
     );
+
+    /// <summary>
+    /// Returns a per-user, writable directory for the database and log file, creating it if
+    /// necessary. On Windows this is %APPDATA%, on Linux ~/.config (or $XDG_CONFIG_HOME), and
+    /// on macOS the user's Application Support / config directory.
+    /// </summary>
+    private static string GetUserDataDirectory()
+    {
+        var directory = Path.Combine(
+            Environment.GetFolderPath(
+                Environment.SpecialFolder.ApplicationData,
+                Environment.SpecialFolderOption.Create
+            ),
+            "YMouseButtonControl"
+        );
+        Directory.CreateDirectory(directory);
+        return directory;
+    }
 }
