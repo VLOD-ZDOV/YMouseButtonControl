@@ -451,3 +451,9 @@ $RECYCLE.BIN/
 ## Visual Studio Code
 ##
 .vscode/*
+
+##
+## Claude Code / local AI assistant settings (machine-specific, never commit)
+##
+.claude/
+CLAUDE.local.md

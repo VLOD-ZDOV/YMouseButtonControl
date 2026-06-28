@@ -68,3 +68,13 @@ Anything that can install .NET 8 should be able to run YMouseButtonControl
    ```
     * YOUR_PLATFORM: win-x64, linux-x64, osx-x64, [more runtimes here](https://learn.microsoft.com/en-us/dotnet/core/rid-catalog)
 4. YMouseButtonControl executable is located in bin folder
+
+## Troubleshooting
+
+Having a problem (profiles not saving, Wayland limitations, per-app profiles, more than 5
+buttons)? See [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md).
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for build/test instructions and
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for a tour of the codebase.
