@@ -61,7 +61,7 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0
 
       - name: Execute unit tests
-        run: dotnet test
+        run: dotnet test YMouseButtonControl.sln
 
       - name: Restore the application
         run: dotnet restore -r ${{ matrix.rid }}  
