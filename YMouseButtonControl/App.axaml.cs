@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -16,11 +17,13 @@ using ReactiveUI;
 using Splat;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using YMouseButtonControl.BackgroundTaskRunner;
+using YMouseButtonControl.Core.Localization;
 using YMouseButtonControl.Core.ViewModels.App;
 using YMouseButtonControl.Core.ViewModels.MainWindow;
 using YMouseButtonControl.Core.ViewModels.Models;
 using YMouseButtonControl.Core.Views;
 using YMouseButtonControl.DependencyInjection;
+using YMouseButtonControl.Domain.Models;
 using YMouseButtonControl.Infrastructure.Context;
 using YMouseButtonControl.Queries.Settings;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
@@ -100,7 +103,41 @@ public partial class App : Application
 
         //Container.GetRequiredService<YMouseButtonControlDbContext>().Init();
 
+        // Apply the saved UI language before any window (and its localized strings) is created.
+        ApplyLanguageSetting();
+
         RxApp.MainThreadScheduler = AvaloniaScheduler.Instance;
+    }
+
+    /// <summary>
+    /// Reads the persisted "Language" setting (creating it as "system" if a pre-existing database
+    /// doesn't have it yet) and applies it to the <see cref="Localizer"/>. Must run before any
+    /// localized view is constructed because translations are resolved at XAML load time.
+    /// </summary>
+    private void ApplyLanguageSetting()
+    {
+        try
+        {
+            var db = Container?.GetRequiredService<YMouseButtonControlDbContext>();
+            if (db is null)
+            {
+                return;
+            }
+
+            var setting = db.SettingStrings.FirstOrDefault(x => x.Name == "Language");
+            if (setting is null)
+            {
+                setting = new SettingString { Name = "Language", StringValue = "system" };
+                db.SettingStrings.Add(setting);
+                db.SaveChanges();
+            }
+
+            Localizer.Instance.SetLanguage(setting.StringValue);
+        }
+        catch
+        {
+            // Localization must never block startup; fall back to the default (English/system).
+        }
     }
 
     public override void OnFrameworkInitializationCompleted()

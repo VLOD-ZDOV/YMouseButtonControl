@@ -10,8 +10,18 @@ public static class GetBoolSetting
 {
     public sealed class BoolSettingVm(SettingBool setting) : ReactiveObject
     {
+        private bool _value = setting.BoolValue;
         public string Name { get; } = setting.Name;
-        public bool Value { get; } = setting.BoolValue;
+
+        // Must be a settable reactive property: the "Start Minimized" checkbox binds two-way to
+        // this value. As a get-only auto-property the checkbox could never write the new value
+        // back, so toggling it neither enabled the Apply button (WhenAnyValue never fired) nor
+        // persisted the change. Mirrors IntSettingVm.
+        public bool Value
+        {
+            get => _value;
+            set => this.RaiseAndSetIfChanged(ref _value, value);
+        }
     }
 
     public sealed class Handler(YMouseButtonControlDbContext db)

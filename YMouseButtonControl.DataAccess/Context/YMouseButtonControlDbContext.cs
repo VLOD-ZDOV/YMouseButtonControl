@@ -366,6 +366,19 @@ public class YMouseButtonControlDbContext : DbContext
                     IntValue = 3,
                 }
             );
+        // Settings use table-per-hierarchy, so this Id must be unique across all Setting rows.
+        // "system" means follow the OS UI language; see Localizer. Existing databases (created
+        // before this seed) are upgraded at startup, since EnsureCreated only seeds on creation.
+        modelBuilder
+            .Entity<SettingString>()
+            .HasData(
+                new SettingString
+                {
+                    Id = 3,
+                    Name = "Language",
+                    StringValue = "system",
+                }
+            );
     }
 }
 

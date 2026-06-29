@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using ReactiveUI;
+using YMouseButtonControl.Core.Localization;
 
 namespace YMouseButtonControl.Core.ViewModels.Models;
 
@@ -81,8 +82,8 @@ public class AsMousePressedAndReleasedActionTypeVm : BaseSimulatedKeystrokeTypeV
     public AsMousePressedAndReleasedActionTypeVm()
     {
         Index = 8;
-        Description = "As mouse button is pressed & when released";
-        ShortDescription = "pressed & released";
+        Description = Localizer.Instance["Skt_AsPressedReleased"];
+        ShortDescription = Localizer.Instance["SktShort_AsPressedReleased"];
         Enabled = true;
     }
 
@@ -95,8 +96,8 @@ public class DuringMouseActionTypeVm : BaseSimulatedKeystrokeTypeVm
     public DuringMouseActionTypeVm()
     {
         Index = 2;
-        Description = "During (press on down, release on up)";
-        ShortDescription = "during";
+        Description = Localizer.Instance["Skt_During"];
+        ShortDescription = Localizer.Instance["SktShort_During"];
         Enabled = true;
     }
 
@@ -109,8 +110,8 @@ public class InAnotherThreadPressedActionTypeVm : BaseSimulatedKeystrokeTypeVm
     public InAnotherThreadPressedActionTypeVm()
     {
         Index = 3;
-        Description = "In another thread as mouse button is pressed";
-        ShortDescription = "thread-down";
+        Description = Localizer.Instance["Skt_ThreadPressed"];
+        ShortDescription = Localizer.Instance["SktShort_ThreadPressed"];
         Enabled = false;
     }
 
@@ -123,8 +124,8 @@ public class InAnotherThreadReleasedActionTypeVm : BaseSimulatedKeystrokeTypeVm
     public InAnotherThreadReleasedActionTypeVm()
     {
         Index = 4;
-        Description = "In another thread as mouse button is released";
-        ShortDescription = "thread-up";
+        Description = Localizer.Instance["Skt_ThreadReleased"];
+        ShortDescription = Localizer.Instance["SktShort_ThreadReleased"];
         Enabled = false;
     }
 
@@ -137,8 +138,8 @@ public class MouseButtonPressedActionTypeVm : BaseSimulatedKeystrokeTypeVm
     public MouseButtonPressedActionTypeVm()
     {
         Index = 0;
-        Description = "As mouse button is pressed";
-        ShortDescription = "pressed";
+        Description = Localizer.Instance["Skt_AsPressed"];
+        ShortDescription = Localizer.Instance["SktShort_AsPressed"];
         Enabled = true;
     }
 
@@ -151,8 +152,8 @@ public class MouseButtonReleasedActionTypeVm : BaseSimulatedKeystrokeTypeVm
     public MouseButtonReleasedActionTypeVm()
     {
         Index = 1;
-        Description = "As mouse button is released";
-        ShortDescription = "released";
+        Description = Localizer.Instance["Skt_AsReleased"];
+        ShortDescription = Localizer.Instance["SktShort_AsReleased"];
         Enabled = true;
     }
 
@@ -165,8 +166,8 @@ public class RepeatedlyWhileButtonDownActionTypeVm : BaseSimulatedKeystrokeTypeV
     public RepeatedlyWhileButtonDownActionTypeVm()
     {
         Index = 5;
-        Description = "Repeatedly while the button is down";
-        ShortDescription = "repeat";
+        Description = Localizer.Instance["Skt_Repeat"];
+        ShortDescription = Localizer.Instance["SktShort_Repeat"];
         Enabled = true;
     }
 
@@ -179,8 +180,8 @@ public class StickyHoldActionTypeVm : BaseSimulatedKeystrokeTypeVm
     public StickyHoldActionTypeVm()
     {
         Index = 7;
-        Description = "Sticky (held down until button is pressed again)";
-        ShortDescription = "sticky hold";
+        Description = Localizer.Instance["Skt_StickyHold"];
+        ShortDescription = Localizer.Instance["SktShort_StickyHold"];
         Enabled = true;
     }
 
@@ -193,8 +194,8 @@ public class StickyRepeatActionTypeVm : BaseSimulatedKeystrokeTypeVm
     public StickyRepeatActionTypeVm()
     {
         Index = 6;
-        Description = "Sticky (repeatedly until button is pressed again)";
-        ShortDescription = "sticky repeat";
+        Description = Localizer.Instance["Skt_StickyRepeat"];
+        ShortDescription = Localizer.Instance["SktShort_StickyRepeat"];
         Enabled = true;
     }
 

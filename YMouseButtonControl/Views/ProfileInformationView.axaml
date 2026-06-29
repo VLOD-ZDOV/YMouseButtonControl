@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:profilesInformation="clr-namespace:YMouseButtonControl.Core.ViewModels.ProfilesInformation;assembly=YMouseButtonControl.Core"
+             xmlns:i18n="clr-namespace:YMouseButtonControl.Core.Localization;assembly=YMouseButtonControl.Core"
              x:DataType="profilesInformation:ProfilesInformationViewModel"
              x:CompileBindings="True"
              mc:Ignorable="d"
@@ -15,17 +16,17 @@
     </Design.DataContext>
 
     <Grid ColumnDefinitions="150,Auto" RowDefinitions="*,*,*,*,*,*">
-        <Label Grid.Row="0" Grid.Column="0" Content="Description" />
+        <Label Grid.Row="0" Grid.Column="0" Content="{i18n:Tr Info_Description}" />
         <Label Grid.Row="0" Grid.Column="1" Content="{Binding ProfileInfo.Description}" />
-        <Label Grid.Row="1" Grid.Column="0" Content="Window Caption" />
+        <Label Grid.Row="1" Grid.Column="0" Content="{i18n:Tr Info_WindowCaption}" />
         <Label Grid.Row="1" Grid.Column="1" Content="{Binding ProfileInfo.WindowCaption}" />
-        <Label Grid.Row="2" Grid.Column="0" Content="Process" />
+        <Label Grid.Row="2" Grid.Column="0" Content="{i18n:Tr Info_Process}" />
         <Label Grid.Row="2" Grid.Column="1" Content="{Binding ProfileInfo.Process}" />
-        <Label Grid.Row="3" Grid.Column="0" Content="Window Class" />
+        <Label Grid.Row="3" Grid.Column="0" Content="{i18n:Tr Info_WindowClass}" />
         <Label Grid.Row="3" Grid.Column="1" Content="{Binding ProfileInfo.WindowClass}" />
-        <Label Grid.Row="4" Grid.Column="0" Content="Parent Class" />
+        <Label Grid.Row="4" Grid.Column="0" Content="{i18n:Tr Info_ParentClass}" />
         <Label Grid.Row="4" Grid.Column="1" Content="{Binding ProfileInfo.ParentClass}" />
-        <Label Grid.Row="5" Grid.Column="0" Content="Match Type" />
+        <Label Grid.Row="5" Grid.Column="0" Content="{i18n:Tr Info_MatchType}" />
         <Label Grid.Row="5" Grid.Column="1" Content="{Binding ProfileInfo.MatchType}" />
     </Grid>
     

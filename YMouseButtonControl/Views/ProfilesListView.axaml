@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:profilesList="clr-namespace:YMouseButtonControl.Core.ViewModels.ProfilesList;assembly=YMouseButtonControl.Core"
+             xmlns:i18n="clr-namespace:YMouseButtonControl.Core.Localization;assembly=YMouseButtonControl.Core"
              x:DataType="profilesList:ProfilesListViewModel"
              x:CompileBindings="True"
              mc:Ignorable="d"
@@ -43,54 +44,54 @@
                     Grid.Column="0"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
-                    Content="Add"
+                    Content="{i18n:Tr Btn_Add}"
                     Command="{Binding AddButtonCommand}" />
             <Button Grid.Row="0"
                     Grid.Column="1"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
-                    Content="Copy"
+                    Content="{i18n:Tr Btn_Copy}"
                     Command="{Binding CopyCommand}">
             </Button>
             <Button Grid.Row="0"
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
-                    Content="Export"
+                    Content="{i18n:Tr Btn_Export}"
                     Command="{Binding ExportCommand}">
             </Button>
             <Button Grid.Row="0"
                     Grid.Column="3"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
-                    Content="Up"
+                    Content="{i18n:Tr Btn_Up}"
                     Command="{Binding UpCommand}">
             </Button>
             <Button Grid.Row="1"
                     Grid.Column="0"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
-                    Content="Edit"
+                    Content="{i18n:Tr Btn_Edit}"
                     Command="{Binding EditButtonCommand}">
             </Button>
             <Button Grid.Row="1"
                     Grid.Column="1"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
-                    Content="Remove"
+                    Content="{i18n:Tr Btn_Remove}"
                     Command="{Binding RemoveButtonCommand}" />
             <Button Grid.Row="1"
                     Grid.Column="2"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
-                    Content="Import"
+                    Content="{i18n:Tr Btn_Import}"
                     Command="{Binding ImportCommand}">
             </Button>
             <Button Grid.Row="1"
                     Grid.Column="3"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
-                    Content="Down"
+                    Content="{i18n:Tr Btn_Down}"
                     Command="{Binding DownCommand}">
             </Button>
         </Grid>

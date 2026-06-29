@@ -1,6 +1,7 @@
 using System;
 using System.Reactive.Linq;
 using ReactiveUI;
+using YMouseButtonControl.Core.Localization;
 using YMouseButtonControl.Core.Services.Profiles;
 using YMouseButtonControl.Core.ViewModels.Dialogs.SimulatedKeystrokesDialog;
 using YMouseButtonControl.Core.ViewModels.Models;
@@ -39,63 +40,63 @@ public class LayerViewModel : ViewModelBase, ILayerViewModel
                 Mb1ComboVm = mbComboViewModelFactory.CreateWithMouseButton(
                     profileVm.BtnSc,
                     MouseButton.Mb1,
-                    "Left Button",
+                    Localizer.Instance["Mb_Left"],
                     profileVm.Mb1Mappings,
                     ShowSimulatedKeystrokesPickerInteraction
                 );
                 Mb2ComboVm = mbComboViewModelFactory.CreateWithMouseButton(
                     profileVm.BtnSc,
                     MouseButton.Mb2,
-                    "Right Button",
+                    Localizer.Instance["Mb_Right"],
                     profileVm.Mb2Mappings,
                     ShowSimulatedKeystrokesPickerInteraction
                 );
                 Mb3ComboVm = mbComboViewModelFactory.CreateWithMouseButton(
                     profileVm.BtnSc,
                     MouseButton.Mb3,
-                    "Middle Button",
+                    Localizer.Instance["Mb_Middle"],
                     profileVm.Mb3Mappings,
                     ShowSimulatedKeystrokesPickerInteraction
                 );
                 Mb4ComboVm = mbComboViewModelFactory.CreateWithMouseButton(
                     profileVm.BtnSc,
                     MouseButton.Mb4,
-                    "Mouse Button 4",
+                    Localizer.Instance["Mb_Button4"],
                     profileVm.Mb4Mappings,
                     ShowSimulatedKeystrokesPickerInteraction
                 );
                 Mb5ComboVm = mbComboViewModelFactory.CreateWithMouseButton(
                     profileVm.BtnSc,
                     MouseButton.Mb5,
-                    "Mouse Button 5",
+                    Localizer.Instance["Mb_Button5"],
                     profileVm.Mb5Mappings,
                     ShowSimulatedKeystrokesPickerInteraction
                 );
                 MwuComboVm = mbComboViewModelFactory.CreateWithMouseButton(
                     profileVm.BtnSc,
                     MouseButton.Mwu,
-                    "Wheel Up",
+                    Localizer.Instance["Mb_WheelUp"],
                     profileVm.MwuMappings,
                     ShowSimulatedKeystrokesPickerInteraction
                 );
                 MwdComboVm = mbComboViewModelFactory.CreateWithMouseButton(
                     profileVm.BtnSc,
                     MouseButton.Mwd,
-                    "Wheel Down",
+                    Localizer.Instance["Mb_WheelDown"],
                     profileVm.MwdMappings,
                     ShowSimulatedKeystrokesPickerInteraction
                 );
                 MwlComboVm = mbComboViewModelFactory.CreateWithMouseButton(
                     profileVm.BtnSc,
                     MouseButton.Mwl,
-                    "Wheel Left",
+                    Localizer.Instance["Mb_WheelLeft"],
                     profileVm.MwlMappings,
                     ShowSimulatedKeystrokesPickerInteraction
                 );
                 MwrComboVm = mbComboViewModelFactory.CreateWithMouseButton(
                     profileVm.BtnSc,
                     MouseButton.Mwr,
-                    "Wheel Right",
+                    Localizer.Instance["Mb_WheelRight"],
                     profileVm.MwrMappings,
                     ShowSimulatedKeystrokesPickerInteraction
                 );
