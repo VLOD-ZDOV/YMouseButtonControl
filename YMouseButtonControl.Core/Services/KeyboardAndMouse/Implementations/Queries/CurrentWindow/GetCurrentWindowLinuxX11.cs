@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using YMouseButtonControl.Core.Services.KeyboardAndMouse.Implementations.Queries.CurrentWindow;
 
 namespace YMouseButtonControl.Core.Services.KeyboardAndMouse.Implementations.MouseListener.Queries.CurrentWindow;
@@ -11,32 +12,60 @@ public class GetCurrentWindowLinuxX11 : IGetCurrentWindow
 
     private static string GetForegroundWindow()
     {
-        var display = X11.XOpenDisplay(nint.Zero);
-        if (display == nint.Zero)
-        {
-            throw new Exception("Error opening display");
-        }
-
         try
         {
-            var pid = GetForegroundWindowPid(display);
-            if (pid is null)
+            var display = X11.XOpenDisplay(nint.Zero);
+            if (display == nint.Zero)
             {
-                return "";
+                // No X11 display reachable (e.g. a native Wayland window is focused). Fall back to
+                // matching every profile instead of throwing on the mouse-hook thread.
+                return "*";
             }
 
-            return GetPathFromPid(pid) ?? "";
+            try
+            {
+                var pid = GetForegroundWindowPid(display);
+                if (pid is null)
+                {
+                    return "";
+                }
+
+                return GetIdentityFromPid(pid.Value);
+            }
+            finally
+            {
+                X11.XCloseDisplay(display);
+            }
         }
-        finally
+        catch
         {
-            X11.XCloseDisplay(display);
+            return "*";
         }
     }
 
-    private static string? GetPathFromPid(int? pid)
+    /// <summary>
+    /// Builds the string a profile's process is matched against. It combines the executable path
+    /// (<c>/proc/&lt;pid&gt;/exe</c>) with the process' command line (<c>/proc/&lt;pid&gt;/cmdline</c>).
+    /// The command line is what lets WINE/Proton games match: their <c>/exe</c> link points at the
+    /// wine loader, but the actual <c>game.exe</c> path appears as a command-line argument (#29).
+    /// </summary>
+    private static string GetIdentityFromPid(int pid)
     {
-        var fi = new FileInfo($"/proc/{pid}/exe");
-        return fi.LinkTarget;
+        var exe = new FileInfo($"/proc/{pid}/exe").LinkTarget ?? "";
+
+        var cmdline = "";
+        try
+        {
+            // cmdline arguments are NUL-separated; flatten to spaces so a simple Contains works.
+            var raw = File.ReadAllBytes($"/proc/{pid}/cmdline");
+            cmdline = Encoding.UTF8.GetString(raw).Replace('\0', ' ').Trim();
+        }
+        catch
+        {
+            // /proc entry may be unreadable (permissions/race); use the exe path alone.
+        }
+
+        return string.IsNullOrEmpty(cmdline) ? exe : $"{exe} {cmdline}";
     }
 
     private static unsafe int? GetForegroundWindowPid(nint display)

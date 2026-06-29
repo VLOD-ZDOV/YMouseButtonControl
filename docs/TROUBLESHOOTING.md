@@ -66,10 +66,36 @@ See also the project wiki: *Linux X11 vs. Wayland Considerations*.
 
 **Symptom:** Buttons 6+ on a gaming mouse can't be mapped.
 
-**Cause:** The OS-level input hooks only expose left/right/middle, the scroll wheel, and the
-two extended buttons (XButton1/XButton2 = MB4/MB5). Anything beyond that requires a
-vendor-specific driver per mouse model. This is **out of scope** for YMouseButtonControl.
-On macOS, MB4/MB5 may not be reported at all.
+**Cause:** This is a **hard limitation of the input backend**, not just a missing feature.
+YMouseButtonControl receives mouse events through **SharpHook** (`libuiohook`), whose
+`MouseButton` enum only defines `Button1`–`Button5` (plus `NoButton`). Physical buttons 6+
+are never delivered to the application, so there is nothing to map. The entire data model,
+database seed, and UI are likewise built around the fixed set of 9 inputs (MB1–MB5 + four
+wheel directions).
+
+**Status:** **Not supportable on the current stack.** Adding it would require replacing the
+input backend with a lower-level, per-platform one (Windows Raw Input, Linux `evdev`, macOS
+IOKit/CGEvent) **and** reworking the model/seed/UI to be dynamic. That is a large, platform-
+specific effort tracked as a future direction rather than a quick fix. On macOS, MB4/MB5 may
+not be reported at all.
+
+## A WINE / Proton game profile never triggers on Linux (issue #29)
+
+**Symptom:** You create a profile for a Windows game running under WINE/Proton (e.g.
+`game.exe`), but it never activates even on an X11 session.
+
+**Cause:** A WINE process' `/proc/<pid>/exe` symlink points at the **wine loader**
+(e.g. `wine64-preloader`), not at the Windows executable. Matching only the executable path
+therefore never sees `game.exe`.
+
+**Status:** **Fixed (X11).** The foreground-window detection now also reads
+`/proc/<pid>/cmdline`, where the real `game.exe` path appears as an argument, and matches the
+profile's `Process` against the combination of the executable path **and** the command line.
+
+**How to use it:** Set the profile's `Process` to the Windows executable name (e.g. `game.exe`,
+or a distinctive part of its path). Substring matching is used, so a fragment is enough. On
+**Wayland** this still cannot work — the foreground window can't be queried (see the Wayland
+section above); use an X11 session. Covered by `YMouseButtonControl.Tests/WineProcessMatchingTests.cs`.
 
 ## "Installation not working" with pip / Python errors (issue #45)
 

@@ -106,10 +106,32 @@ delegating to focused bootstrappers (`Services`, `Factories`, `KeyboardAndMouse`
 > `TestProvider` (no real input is captured); `RELEASE` builds use the real
 > `SimpleReactiveGlobalHook`. Keep this in mind when "nothing happens" while debugging.
 
+## Localization
+
+UI strings are localized through a small in-process table rather than .NET satellite assemblies:
+
+* `Core/Localization/Translations.cs` — one dictionary per language (`En`, `Ru`, `De`, `Es`,
+  `Fr`). **English is the source of truth and defines every key**; other languages may omit keys
+  and fall back to English. `LocalizationTests` enforces that the non-English tables have exactly
+  the same keys and no blank values.
+* `Core/Localization/Localizer.cs` — singleton that holds the active table and resolves keys
+  (`Localizer.Instance["Key"]`, or `.Format("Key", arg)` for composite strings).
+* `Core/Localization/TrExtension.cs` — the `{i18n:Tr Key}` XAML markup extension. It resolves the
+  string **at load time**, which is why a language change requires a restart.
+
+The language is stored as a `SettingString` named `Language` (`"system"` follows the OS UI
+culture) and applied in `App` **before any window is created**. To **add a language**: add its
+code to `Localizer.SupportedLanguages`, add a dictionary to `Translations`, wire it into
+`Localizer.SetLanguage` and `LanguageOption.All`. To **add a string**: add the key to `En` (and
+ideally the other tables) and reference it via `{i18n:Tr}` or `Localizer.Instance`.
+
 ## Platform notes
 
 * **Linux/Wayland** cannot tell an application which window currently has keyboard focus, and
   cannot suppress the original mouse button. This limits profile matching and "block original
   input"/mode-6 behaviour on Wayland. X11 is recommended. See `docs/TROUBLESHOOTING.md`.
-* **More than 5 mouse buttons** is not supported because the OS-level hooks only expose
-  LMB/RMB/MMB, wheel, and XButton1/XButton2.
+* **WINE/Proton matching (X11):** foreground detection reads `/proc/<pid>/cmdline` in addition to
+  the executable link, so a profile can match the Windows `game.exe` even though the process'
+  executable is the wine loader (`GetCurrentWindowLinuxX11`, issue #29).
+* **More than 5 mouse buttons** is not supported: SharpHook/`libuiohook` only delivers
+  `Button1`–`Button5`, so buttons 6+ never reach the app (issue #44).
