@@ -11,10 +11,17 @@ This is an attempt at a cross-platform clone of X-Mouse-Button-Control.
 2. Extract the archive
 3. Run YMouseButtonControl
 
+## Language
+
+YMouseButtonControl is localized into **English, Russian, German, Spanish and French**.
+By default it follows your operating system's UI language; you can override it in
+**Settings → Language**. Changing the language requires a restart (like the theme setting).
+
 ## Requirements
 
 * [.NET 8.0 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
   * On windows if you run YMouseButtonControl.exe, it will take you to the download automatically
+  * Self-contained release archives bundle the runtime, so nothing extra is required for those
 
 ### Linux
 
@@ -68,6 +75,20 @@ Anything that can install .NET 8 should be able to run YMouseButtonControl
    ```
     * YOUR_PLATFORM: win-x64, linux-x64, osx-x64, [more runtimes here](https://learn.microsoft.com/en-us/dotnet/core/rid-catalog)
 4. YMouseButtonControl executable is located in bin folder
+
+### Helper script
+
+`scripts/build-release.sh` builds self-contained, single-file releases and strips files that
+aren't needed to run (debug symbols, `LICENSE`):
+
+```
+scripts/build-release.sh                 # win-x64, linux-x64, osx-x64
+scripts/build-release.sh linux-x64       # a single runtime
+scripts/build-release.sh win-x64 osx-arm64
+```
+
+Output goes to `bin/publish-<rid>/`. Each folder contains the executable plus `appsettings.json`
+(required at startup); the macOS build additionally ships the native `.dylib` files it needs.
 
 ## Troubleshooting
 
