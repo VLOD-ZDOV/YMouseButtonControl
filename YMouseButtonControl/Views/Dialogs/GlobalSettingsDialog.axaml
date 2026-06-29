@@ -1,8 +1,9 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:globalSettingsDialog="clr-namespace:YMouseButtonControl.Core.ViewModels.Dialogs.GlobalSettingsDialog;assembly=YMouseButtonControl.Core"
+        xmlns:i18n="clr-namespace:YMouseButtonControl.Core.Localization;assembly=YMouseButtonControl.Core"
         x:DataType="globalSettingsDialog:GlobalSettingsDialogViewModel"
         x:CompileBindings="True"
         WindowStartupLocation="CenterOwner"
@@ -10,62 +11,53 @@
         SizeToContent="Height"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="YMouseButtonControl.Views.Dialogs.GlobalSettingsDialog"
-        Title="Global Settings"
+        Title="{i18n:Tr Set_Title}"
         RequestedThemeVariant="{Binding ThemeVariant}">
     <Design.DataContext>
         <globalSettingsDialog:GlobalSettingsDialogViewModel />
     </Design.DataContext>
 
-    <Grid Margin="6" RowDefinitions="Auto,Auto,Auto,Auto,*">
+    <Grid Margin="6" RowDefinitions="Auto,Auto,Auto,Auto,Auto,*">
         <CheckBox Grid.Row="0"
-                  Content="Start Minimized"
+                  Content="{i18n:Tr Set_StartMinimized}"
                   IsChecked="{Binding StartMinimized.Value}" />
         <CheckBox Grid.Row="1"
-                  Content="Start Menu"
+                  Content="{i18n:Tr Set_StartMenu}"
                   IsEnabled="{Binding StartMenuEnabled}"
-                  IsChecked="{Binding StartMenuChecked}">
-            <ToolTip.Tip>
-                <TextBlock>
-                    Add YMouseButtonControl to the start menu.
-                    <LineBreak />
-                    Disabled for macOS.
-                </TextBlock>
-            </ToolTip.Tip>
-        </CheckBox>
+                  IsChecked="{Binding StartMenuChecked}"
+                  ToolTip.Tip="{i18n:Tr Set_StartMenuTip}" />
         <CheckBox Grid.Row="2"
-                  Content="Logging"
-                  IsChecked="{Binding LoggingEnabled}">
-			<ToolTip.Tip>
-				<TextBlock>
-					Whether or not logging to file YMouseButtonControl.log is performed. Requires a restart.
-				</TextBlock>
-			</ToolTip.Tip>
-		</CheckBox>
+                  Content="{i18n:Tr Set_Logging}"
+                  IsChecked="{Binding LoggingEnabled}"
+                  ToolTip.Tip="{i18n:Tr Set_LoggingTip}" />
         <StackPanel Grid.Row="3">
-            <Label Content="Theme" />
-			<ComboBox ItemsSource="{Binding ThemeCollection}"
-                      SelectedItem="{Binding SelectedTheme}">
-				<ComboBox.ItemTemplate>
-					<DataTemplate>
-						<TextBlock Text="{Binding Name}" />
-					</DataTemplate>
-				</ComboBox.ItemTemplate>
-			</ComboBox>
-            <ToolTip.Tip>
-                <TextBlock>
-                    The application theme. Requires a restart.
-                    <LineBreak />
-                    <TextBlock Text="Default" FontWeight="Bold" />: follow the theme of your OS. Doesn't work on Linux.
-                    <LineBreak />
-                    <TextBlock Text="Light" FontWeight="Bold" />: light theme.
-                    <LineBreak />
-                    <TextBlock Text="Dark" FontWeight="Bold" />: dark theme.
-                </TextBlock>
-            </ToolTip.Tip>
+            <Label Content="{i18n:Tr Set_Theme}" />
+            <ComboBox ItemsSource="{Binding ThemeCollection}"
+                      SelectedItem="{Binding SelectedTheme}"
+                      ToolTip.Tip="{i18n:Tr Set_ThemeTip}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
         </StackPanel>
-        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button Content="Apply" Command="{Binding ApplyCommand}" />
-            <Button Content="Cancel" Click="Cancel_OnClick"></Button>
+        <StackPanel Grid.Row="4">
+            <Label Content="{i18n:Tr Set_Language}" />
+            <ComboBox ItemsSource="{Binding LanguageCollection}"
+                      SelectedItem="{Binding SelectedLanguage}"
+                      HorizontalAlignment="Stretch"
+                      ToolTip.Tip="{i18n:Tr Set_LanguageTip}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Display}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button Content="{i18n:Tr Btn_Apply}" Command="{Binding ApplyCommand}" />
+            <Button Content="{i18n:Tr Btn_Cancel}" Click="Cancel_OnClick" />
         </StackPanel>
     </Grid>
 </Window>

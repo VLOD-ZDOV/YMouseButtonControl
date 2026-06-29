@@ -21,6 +21,7 @@ public static class GlobalSettingsDialogHandlerRegistrations
             .AddScoped<EnableLogging.Handler>()
             .AddScoped<DisableLogging.Handler>()
             .AddScoped<GetIntSetting.Handler>()
+            .AddScoped<GetStringSetting.Handler>()
             .AddScoped<GetBoolSetting.Handler>()
             .AddScoped<UpdateSetting<string>.Handler>()
             .AddScoped<UpdateSetting<int>.Handler>()

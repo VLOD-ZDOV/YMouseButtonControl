@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:YMouseButtonControl.Converters"
         xmlns:simulatedKeystrokesDialog="clr-namespace:YMouseButtonControl.Core.ViewModels.Dialogs.SimulatedKeystrokesDialog;assembly=YMouseButtonControl.Core"
+        xmlns:i18n="clr-namespace:YMouseButtonControl.Core.Localization;assembly=YMouseButtonControl.Core"
         x:DataType="simulatedKeystrokesDialog:SimulatedKeystrokesDialogViewModel"
         x:CompileBindings="True"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -23,7 +24,7 @@
     </Window.Resources>
 
     <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,400,Auto,Auto" Margin="10">
-        <Label HorizontalAlignment="Left" Content="Enter the custom key(s)" VerticalAlignment="Center"
+        <Label HorizontalAlignment="Left" Content="{i18n:Tr Sk_EnterCustomKeys}" VerticalAlignment="Center"
                VerticalContentAlignment="Center" />
 
         <Grid Grid.Row="1" ColumnDefinitions="*,Auto">
@@ -35,49 +36,49 @@
                          CommandParameter="\{\}">
                 <SplitButton.Flyout>
                     <MenuFlyout Placement="Bottom">
-                        <MenuItem Header="Modifier Keys"
+                        <MenuItem Header="{i18n:Tr Sk_MenuModifier}"
                                   ItemsSource="{Binding ModifierKeys, Converter={StaticResource DialogKeyConverter}}"
                                   SelectedItem="{Binding CurrentKey}"
                                   Command="{Binding SplitButtonCommand}"
                                   CommandParameter="{Binding CurrentKey}" />
 
-                        <MenuItem Header="Standard Keys"
+                        <MenuItem Header="{i18n:Tr Sk_MenuStandard}"
                                   ItemsSource="{Binding StandardKeys, Converter={StaticResource DialogKeyConverter}}"
                                   SelectedItem="{Binding CurrentKey}"
                                   Command="{Binding SplitButtonCommand}"
                                   CommandParameter="{Binding CurrentKey}" />
 
-                        <MenuItem Header="Direction Keys"
+                        <MenuItem Header="{i18n:Tr Sk_MenuDirection}"
                                   ItemsSource="{Binding DirectionKeys, Converter={StaticResource DialogKeyConverter}}"
                                   SelectedItem="{Binding CurrentKey}"
                                   Command="{Binding SplitButtonCommand}"
                                   CommandParameter="{Binding CurrentKey}" />
 
-                        <MenuItem Header="Function Keys"
+                        <MenuItem Header="{i18n:Tr Sk_MenuFunction}"
                                   ItemsSource="{Binding FunctionKeys, Converter={StaticResource DialogKeyConverter}}"
                                   SelectedItem="{Binding CurrentKey}"
                                   Command="{Binding SplitButtonCommand}"
                                   CommandParameter="{Binding CurrentKey}" />
 
-                        <MenuItem Header="Numeric Keypad"
+                        <MenuItem Header="{i18n:Tr Sk_MenuNumeric}"
                                   ItemsSource="{Binding NumericKeypadKeys, Converter={StaticResource DialogKeyConverter}}"
                                   SelectedItem="{Binding CurrentKey}"
                                   Command="{Binding SplitButtonCommand}"
                                   CommandParameter="{Binding CurrentKey}" />
 
-                        <MenuItem Header="Media Keys"
+                        <MenuItem Header="{i18n:Tr Sk_MenuMedia}"
                                   ItemsSource="{Binding MediaKeys, Converter={StaticResource DialogKeyConverter}}"
                                   SelectedItem="{Binding CurrentKey}"
                                   Command="{Binding SplitButtonCommand}"
                                   CommandParameter="{Binding CurrentKey}" />
 
-                        <MenuItem Header="Browser Keys"
+                        <MenuItem Header="{i18n:Tr Sk_MenuBrowser}"
                                   ItemsSource="{Binding BrowserKeys, Converter={StaticResource DialogKeyConverter}}"
                                   SelectedItem="{Binding CurrentKey}"
                                   Command="{Binding SplitButtonCommand}"
                                   CommandParameter="{Binding CurrentKey}" />
 
-                        <MenuItem Header="Mouse Buttons"
+                        <MenuItem Header="{i18n:Tr Sk_MenuMouse}"
                                   ItemsSource="{Binding MouseButtons, Converter={StaticResource DialogKeyConverter}}"
                                   SelectedItem="{Binding CurrentKey}"
                                   Command="{Binding SplitButtonCommand}"
@@ -88,49 +89,31 @@
         </Grid>
 
         <Grid Grid.Row="2" ColumnDefinitions="350,*">
-            <Label HorizontalAlignment="Left" Content="How to send the simulated key strokes:" />
+            <Label HorizontalAlignment="Left" Content="{i18n:Tr Sk_HowToSend}" />
             <ComboBox Grid.Column="1"
                       ItemsSource="{Binding SimulatedKeystrokesTypes}"
                       SelectedItem="{Binding SimulatedKeystrokesType}"
-                      HorizontalAlignment="Stretch" />
-            <ToolTip.Tip>
-                <TextBlock>
-                    Mode 6 (repeat while mouse down) does not work on Linux.
-                </TextBlock>
-            </ToolTip.Tip>
+                      HorizontalAlignment="Stretch"
+                      ToolTip.Tip="{i18n:Tr Sk_Mode6Tip}" />
         </Grid>
 
         <Grid Grid.Row="3" ColumnDefinitions="*,Auto">
             <!-- Checkbox surrounded with grid to allow tooltip to show even when the control is disabled -->
-            <Grid>
+            <Grid ToolTip.Tip="{i18n:Tr Sk_BlockInputTip}">
                 <CheckBox IsEnabled="{Binding BlockOriginalMouseInputEnabled}"
-                          IsChecked="{Binding BlockOriginalMouseInput}" Content="Block original mouse input">
+                          IsChecked="{Binding BlockOriginalMouseInput}" Content="{i18n:Tr Sk_BlockInput}">
                 </CheckBox>
-                <ToolTip.Tip>
-                    <TextBlock>
-                        Suppress the original mouse click or not.
-                        <LineBreak />
-                        Windows and macOS only.
-                    </TextBlock>
-                </ToolTip.Tip>
             </Grid>
             <StackPanel Grid.Column="1">
-                <Label Content="Auto Repeat Delay" />
+                <Label Content="{i18n:Tr Sk_AutoRepeatDelay}" />
                 <NumericUpDown Value="{Binding AutoRepeatDelay}" IsEnabled="{Binding AutoRepeatEnabled}"
-                               VerticalContentAlignment="Center" Minimum="0" FormatString="0">
-                    <ToolTip.Tip>
-                        <TextBlock>
-                            The delay in milliseconds before repeating. 33 is the default.
-                            <LineBreak />
-                            The lower the number, the quicker the repeat. The higher the number, the slower the repeat.
-                        </TextBlock>
-                    </ToolTip.Tip>
-                </NumericUpDown>
+                               VerticalContentAlignment="Center" Minimum="0" FormatString="0"
+                               ToolTip.Tip="{i18n:Tr Sk_AutoRepeatDelayTip}" />
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="4">
-            <CheckBox Content="Randomize auto repeat delay 0%-10%"
+            <CheckBox Content="{i18n:Tr Sk_RandomizeDelay}"
                       IsEnabled="{Binding AutoRepeatRandomizeDelayEnabled}"
                       IsChecked="{Binding AutoRepeatRandomizeDelayChecked}" />
         </Grid>
@@ -142,18 +125,18 @@
         </Grid>
 
         <Grid Grid.Row="6" ColumnDefinitions="350,*">
-            <Label Content="Description (to show in the button drop-down)" />
+            <Label Content="{i18n:Tr Sk_DescriptionDropdown}" />
             <TextBox Grid.Column="1" Text="{Binding Description}"></TextBox>
         </Grid>
 
         <Grid Grid.Row="7" ColumnDefinitions="Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Right">
-            <Label Content="Cursor Position: X,Y" />
+            <Label Content="{i18n:Tr Sk_CursorPosition}" />
             <TextBox Grid.Column="1" Text="{Binding ComputedXy}" />
             <Button Grid.Column="2">
                 <Image Source="../../Resources/crosshair.png" Width="16" Height="16" />
             </Button>
-            <Button Grid.Column="3" Content="OK" Command="{Binding OkCommand}" />
-            <Button Grid.Column="4" Content="Cancel" Click="Button_OnClick" />
+            <Button Grid.Column="3" Content="{i18n:Tr Btn_Ok}" Command="{Binding OkCommand}" />
+            <Button Grid.Column="4" Content="{i18n:Tr Btn_Cancel}" Click="Button_OnClick" />
         </Grid>
     </Grid>
 </Window>

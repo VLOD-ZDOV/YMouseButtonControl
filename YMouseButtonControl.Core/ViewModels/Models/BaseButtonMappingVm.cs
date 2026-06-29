@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using ReactiveUI;
+using YMouseButtonControl.Core.Localization;
 using YMouseButtonControl.Domain.Models;
 
 namespace YMouseButtonControl.Core.ViewModels.Models;
@@ -186,7 +187,7 @@ public class DisabledMappingVm : BaseButtonMappingVm
     public DisabledMappingVm()
     {
         Index = 1;
-        Description = "Disabled";
+        Description = Localizer.Instance["Map_Disabled"];
     }
 
     public override BaseButtonMappingVm Clone() => CreateClone(new DisabledMappingVm());
@@ -197,7 +198,7 @@ public class NothingMappingVm : BaseButtonMappingVm
     public NothingMappingVm()
     {
         Index = 0;
-        Description = "** No Change (Don't Intercept) **";
+        Description = Localizer.Instance["Map_NoChange"];
     }
 
     public override BaseButtonMappingVm Clone() => CreateClone(new NothingMappingVm());
@@ -208,7 +209,7 @@ public class SimulatedKeystrokeVm : BaseButtonMappingVm
     public SimulatedKeystrokeVm()
     {
         Index = 2;
-        Description = "Simulated Keys (undefined)";
+        Description = Localizer.Instance["Map_SimulatedUndefined"];
         CanRaiseDialog = true;
         BlockOriginalMouseInput = true;
     }
@@ -218,7 +219,10 @@ public class SimulatedKeystrokeVm : BaseButtonMappingVm
     public override string? ToString()
     {
         var myStr = SimulatedKeystrokeType is not null
-            ? $"Simulated Keys: ({SimulatedKeystrokeType.ShortDescription})"
+            ? Localizer.Instance.Format(
+                "Map_SimulatedKeysFmt",
+                SimulatedKeystrokeType.ShortDescription
+            )
             : Description;
 
         if (!string.IsNullOrWhiteSpace(PriorityDescription))
@@ -240,7 +244,7 @@ public class RightClickVm : BaseButtonMappingVm
     public RightClickVm()
     {
         Index = 3;
-        Description = "Right Click";
+        Description = Localizer.Instance["Map_RightClick"];
     }
 
     public override BaseButtonMappingVm Clone() => CreateClone(new RightClickVm());

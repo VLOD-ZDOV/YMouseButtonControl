@@ -26,6 +26,8 @@ public class GlobalSettingsDialogViewModel : DialogBase, IGlobalSettingsDialogVi
     private GetIntSetting.IntSettingVm _themeSetting;
     private ObservableCollection<ListThemes.ThemeVm> _themeCollection;
     private ListThemes.ThemeVm _selectedTheme;
+    private ObservableCollection<LanguageOption> _languageCollection;
+    private LanguageOption _selectedLanguage;
     private readonly ObservableAsPropertyHelper<bool>? _applyIsExec;
     private readonly ThemeVariant _themeVariant;
 
@@ -38,8 +40,10 @@ public class GlobalSettingsDialogViewModel : DialogBase, IGlobalSettingsDialogVi
         DisableLogging.Handler disableLoggingHandler,
         GetLoggingState.Handler loggingStateHandler,
         GetIntSetting.Handler getIntSettingHandler,
+        GetStringSetting.Handler getStringSettingHandler,
         UpdateSetting<int>.Handler updateSettingIntHandler,
         UpdateSetting<bool>.Handler updateSettingBoolHandler,
+        UpdateSetting<string>.Handler updateSettingStringHandler,
         GetThemeVariant.Handler getThemeVariantHandler,
         ListThemes.Handler listThemesHandler
     )
@@ -54,6 +58,13 @@ public class GlobalSettingsDialogViewModel : DialogBase, IGlobalSettingsDialogVi
         _themeSetting = getIntSettingHandler.Execute(new Queries.Settings.Models.Query("Theme"));
         _themeCollection = [.. listThemesHandler.Execute()];
         _selectedTheme = _themeCollection.First(x => x.Id == _themeSetting.Value);
+        _languageCollection = [.. LanguageOption.All];
+        var currentLanguage = getStringSettingHandler.Execute(
+            new Queries.Settings.Models.Query("Language")
+        );
+        _selectedLanguage =
+            _languageCollection.FirstOrDefault(x => x.Code == currentLanguage)
+            ?? _languageCollection.First();
 
         // Update the theme setting selected theme value
         this.WhenAnyValue(x => x.SelectedTheme).Subscribe(x => ThemeSetting.Value = x.Id);
@@ -79,12 +90,19 @@ public class GlobalSettingsDialogViewModel : DialogBase, IGlobalSettingsDialogVi
                 getIntSettingHandler.Execute(new Queries.Settings.Models.Query("Theme")).Value
                 != val
         );
+        var languageChanged = this.WhenAnyValue(
+            x => x.SelectedLanguage,
+            selector: val =>
+                val.Code
+                != getStringSettingHandler.Execute(new Queries.Settings.Models.Query("Language"))
+        );
         var applyIsExecObs = this.WhenAnyValue(x => x.AppIsExec);
         var canSave = startMinimizedChanged
             .Merge(loggingChanged)
             .Merge(startMenuChanged)
             .Merge(applyIsExecObs)
-            .Merge(themeChanged);
+            .Merge(themeChanged)
+            .Merge(languageChanged);
         ApplyCommand = ReactiveCommand.CreateFromTask(
             async () =>
             {
@@ -120,6 +138,9 @@ public class GlobalSettingsDialogViewModel : DialogBase, IGlobalSettingsDialogVi
                 );
                 await updateSettingIntHandler.ExecuteAsync(
                     new UpdateSetting<int>.Command("Theme", ThemeSetting.Value)
+                );
+                await updateSettingStringHandler.ExecuteAsync(
+                    new UpdateSetting<string>.Command("Language", SelectedLanguage.Code)
                 );
             },
             canSave
@@ -165,6 +186,18 @@ public class GlobalSettingsDialogViewModel : DialogBase, IGlobalSettingsDialogVi
     {
         get => _themeCollection;
         set => this.RaiseAndSetIfChanged(ref _themeCollection, value);
+    }
+
+    public ObservableCollection<LanguageOption> LanguageCollection
+    {
+        get => _languageCollection;
+        set => this.RaiseAndSetIfChanged(ref _languageCollection, value);
+    }
+
+    public LanguageOption SelectedLanguage
+    {
+        get => _selectedLanguage;
+        set => this.RaiseAndSetIfChanged(ref _selectedLanguage, value);
     }
 
     public ReactiveCommand<Unit, Unit> ApplyCommand { get; init; }

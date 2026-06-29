@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:views="clr-namespace:YMouseButtonControl.Views"
              xmlns:layer="clr-namespace:YMouseButtonControl.Core.ViewModels.Layer;assembly=YMouseButtonControl.Core"
+             xmlns:i18n="clr-namespace:YMouseButtonControl.Core.Localization;assembly=YMouseButtonControl.Core"
              x:DataType="layer:LayerViewModel"
              x:CompileBindings="True"
              mc:Ignorable="d"
@@ -25,14 +26,14 @@
     </UserControl.Styles>
 
     <TabControl Padding="0">
-        <TabItem Header="Layer 1">
+        <TabItem Header="{i18n:Tr Layer_Tab1}">
             <Grid RowDefinitions="*,*,*,*,*,*,*,*,*,*">
                 <Grid ColumnDefinitions="150,*,Auto,Auto,Auto" Margin="5">
-                    <Label Content="Layer Name" />
-                    <TextBox Grid.Column="1" Text="Layer 1 (Default)" />
-                    <Button Grid.Column="2" IsEnabled="False">Copy</Button>
-                    <Button Grid.Column="3" IsEnabled="False">Swap</Button>
-                    <Button Grid.Column="4" IsEnabled="False">Reset</Button>
+                    <Label Content="{i18n:Tr Layer_Name}" />
+                    <TextBox Grid.Column="1" Text="{i18n:Tr Layer_1Default}" />
+                    <Button Grid.Column="2" IsEnabled="False" Content="{i18n:Tr Btn_Copy}" />
+                    <Button Grid.Column="3" IsEnabled="False" Content="{i18n:Tr Layer_Swap}" />
+                    <Button Grid.Column="4" IsEnabled="False" Content="{i18n:Tr Layer_Reset}" />
                 </Grid>
                 <views:MouseButtonComboControl Grid.Row="1" DataContext="{Binding Mb1ComboVm}" />
                 <views:MouseButtonComboControl Grid.Row="2" DataContext="{Binding Mb2ComboVm}" />
@@ -45,8 +46,8 @@
                 <views:MouseButtonComboControl Grid.Row="9" DataContext="{Binding MwrComboVm}" />
             </Grid>
         </TabItem>
-        <TabItem Header="Layer 2"></TabItem>
-        <TabItem Header="Scrolling"></TabItem>
-        <TabItem Header="Options"></TabItem>
+        <TabItem Header="{i18n:Tr Layer_Tab2}"></TabItem>
+        <TabItem Header="{i18n:Tr Layer_TabScrolling}"></TabItem>
+        <TabItem Header="{i18n:Tr Layer_TabOptions}"></TabItem>
     </TabControl>
 </UserControl>

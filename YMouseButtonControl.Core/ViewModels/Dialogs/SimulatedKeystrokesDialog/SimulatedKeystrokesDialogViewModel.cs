@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive;
 using Avalonia.Styling;
 using ReactiveUI;
+using YMouseButtonControl.Core.Localization;
 using YMouseButtonControl.Core.Services.KeyboardAndMouse.EventArgs;
 using YMouseButtonControl.Core.Services.KeyboardAndMouse.Implementations;
 using YMouseButtonControl.Core.ViewModels.Dialogs.SimulatedKeystrokesDialog.Queries.Theme;
@@ -50,7 +51,7 @@ public class SimulatedKeystrokesDialogViewModel : DialogBase, IDisposable
     )
     {
         ThemeVariant = getThemeVariantHandler.Execute();
-        _title = $"SimulatedKeystrokes - {buttonName}";
+        _title = Localizer.Instance.Format("Sk_TitleFmt", buttonName);
         _mouseListener = mouseListener;
         currentMapping ??= new SimulatedKeystrokeVm();
         var newMapping = new SimulatedKeystrokeVm();
