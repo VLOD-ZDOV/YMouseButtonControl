@@ -17,7 +17,17 @@ public sealed class Localizer : ReactiveObject
     public static Localizer Instance { get; } = new();
 
     /// <summary>Language codes the UI offers explicitly, besides the implicit "system" option.</summary>
-    public static readonly string[] SupportedLanguages = ["en", "ru", "de", "es", "fr"];
+    public static readonly string[] SupportedLanguages =
+    [
+        "en",
+        "ru",
+        "de",
+        "es",
+        "fr",
+        "uk",
+        "pt",
+        "zh",
+    ];
 
     private IReadOnlyDictionary<string, string> _current = Translations.En;
 
@@ -35,6 +45,9 @@ public sealed class Localizer : ReactiveObject
             "de" => Translations.De,
             "es" => Translations.Es,
             "fr" => Translations.Fr,
+            "uk" => Translations.Uk,
+            "pt" => Translations.Pt,
+            "zh" => Translations.Zh,
             _ => Translations.En,
         };
     }

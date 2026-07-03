@@ -13,7 +13,8 @@ This is an attempt at a cross-platform clone of X-Mouse-Button-Control.
 
 ## Language
 
-YMouseButtonControl is localized into **English, Russian, German, Spanish and French**.
+YMouseButtonControl is localized into **English, Russian, German, Spanish, French, Ukrainian,
+Portuguese (Brazil) and Simplified Chinese**.
 By default it follows your operating system's UI language; you can override it in
 **Settings → Language**. Changing the language requires a restart (like the theme setting).
 
