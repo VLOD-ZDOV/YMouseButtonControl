@@ -19,12 +19,12 @@
             <TrayIcon Icon="/Resources/mouse.ico" ToolTipText="{Binding ToolTipText}">
                 <TrayIcon.Menu>
                     <NativeMenu>
-                        <NativeMenuItem Header="Setup" Command="{Binding SetupCommand}" />
+                        <NativeMenuItem Header="{Binding SetupHeader}" Command="{Binding SetupCommand}" />
                         <NativeMenuItem Header="{Binding RunAtStartupHeader}"
                                         IsEnabled="{Binding RunAtStartupIsEnabled}"
                                         Command="{Binding RunAtStartupCommand}" />
                         <NativeMenuItemSeparator />
-                        <NativeMenuItem Header="Exit" Command="{Binding ExitCommand}" />
+                        <NativeMenuItem Header="{Binding ExitHeader}" Command="{Binding ExitCommand}" />
                     </NativeMenu>
                 </TrayIcon.Menu>
             </TrayIcon>

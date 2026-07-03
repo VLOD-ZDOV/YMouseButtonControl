@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
+using YMouseButtonControl.Core.Localization;
 using YMouseButtonControl.Core.ViewModels.App.Commands.StartupInstaller.Install;
 using YMouseButtonControl.Core.ViewModels.App.Commands.StartupInstaller.Uninstall;
 using YMouseButtonControl.Core.ViewModels.App.Queries.StartupInstaller.CanBeInstalled;
@@ -20,8 +21,15 @@ public class AppViewModel : ViewModelBase, IAppViewModel
     private bool _runAtStartupIsEnabled;
     private const string RunAtStartupChecked = "✅ ";
     private const string RunAtStartupNotChecked = "";
-    private const string RunAtStartupHeaderFmt = "{0}Run at startup";
     private string _runAtStartupHeader = "";
+
+    /// <summary>
+    /// Tray menu headers come from the view model rather than XAML markup because App.axaml is
+    /// loaded before the saved language is applied; the view model is constructed after.
+    /// </summary>
+    private static string FormatRunAtStartupHeader(bool isChecked) =>
+        (isChecked ? RunAtStartupChecked : RunAtStartupNotChecked)
+        + Localizer.Instance["Tray_RunAtStartup"];
 
     public AppViewModel(
         ICanBeInstalledHandler canBeInstalledHandler,
@@ -34,9 +42,7 @@ public class AppViewModel : ViewModelBase, IAppViewModel
     {
         RunAtStartupIsEnabled = canBeInstalledHandler.Execute();
         RunAtStartupIsChecked = isInstalledHandler.Execute();
-        RunAtStartupHeader = RunAtStartupIsChecked
-            ? string.Format(RunAtStartupHeaderFmt, RunAtStartupChecked)
-            : string.Format(RunAtStartupHeaderFmt, RunAtStartupNotChecked);
+        RunAtStartupHeader = FormatRunAtStartupHeader(RunAtStartupIsChecked);
         ExitCommand = ReactiveCommand.Create(() =>
         {
             if (
@@ -72,17 +78,14 @@ public class AppViewModel : ViewModelBase, IAppViewModel
                     // uninstall
                     uninstallHandler.Execute();
                     RunAtStartupIsChecked = false;
-                    RunAtStartupHeader = string.Format(
-                        RunAtStartupHeaderFmt,
-                        RunAtStartupNotChecked
-                    );
+                    RunAtStartupHeader = FormatRunAtStartupHeader(false);
                 }
                 else
                 {
                     // install
                     installHandler.Execute();
                     RunAtStartupIsChecked = true;
-                    RunAtStartupHeader = string.Format(RunAtStartupHeaderFmt, RunAtStartupChecked);
+                    RunAtStartupHeader = FormatRunAtStartupHeader(true);
                 }
             },
             runAtStartupCanExecute
@@ -90,6 +93,10 @@ public class AppViewModel : ViewModelBase, IAppViewModel
     }
 
     public string ToolTipText => $"YMouseButtonControl v{GetType().Assembly.GetName().Version}";
+
+    public string SetupHeader => Localizer.Instance["Tray_Setup"];
+
+    public string ExitHeader => Localizer.Instance["Tray_Exit"];
 
     public bool RunAtStartupIsEnabled
     {

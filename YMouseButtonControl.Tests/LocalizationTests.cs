@@ -11,7 +11,7 @@ namespace YMouseButtonControl.Tests;
 public class LocalizationTests
 {
     public static TheoryData<string> NonEnglishLanguages =>
-        new() { "ru", "de", "es", "fr" };
+        new() { "ru", "de", "es", "fr", "uk", "pt", "zh" };
 
     [Theory]
     [MemberData(nameof(NonEnglishLanguages))]
@@ -23,6 +23,9 @@ public class LocalizationTests
             "de" => Translations.De,
             "es" => Translations.Es,
             "fr" => Translations.Fr,
+            "uk" => Translations.Uk,
+            "pt" => Translations.Pt,
+            "zh" => Translations.Zh,
             _ => Translations.En,
         };
 
@@ -43,6 +46,9 @@ public class LocalizationTests
             "de" => Translations.De,
             "es" => Translations.Es,
             "fr" => Translations.Fr,
+            "uk" => Translations.Uk,
+            "pt" => Translations.Pt,
+            "zh" => Translations.Zh,
             _ => Translations.En,
         };
 

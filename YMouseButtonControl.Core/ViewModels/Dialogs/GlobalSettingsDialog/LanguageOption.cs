@@ -18,5 +18,8 @@ public sealed record LanguageOption(string Code, string Display)
             new("de", "Deutsch"),
             new("es", "Español"),
             new("fr", "Français"),
+            new("uk", "Українська"),
+            new("pt", "Português (Brasil)"),
+            new("zh", "中文（简体）"),
         ];
 }
