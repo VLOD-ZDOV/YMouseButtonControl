@@ -29,10 +29,12 @@ public interface IEventSimulatorService
     void SimulateMouseRelease(MouseButton mb);
 
     /// <summary>
-    /// TODO
+    /// Taps the keys in order like <see cref="TapKeys(string?)"/>, waiting <paramref name="delay"/>
+    /// between key presses and stopping early when <paramref name="cancellationToken"/> is cancelled.
     /// </summary>
-    /// <param name="keys"></param>
+    /// <param name="keys">Keys to be tapped</param>
     /// <param name="delay">Optional delay between key presses</param>
+    /// <param name="cancellationToken">Stops the remaining taps when cancelled</param>
     void TapKeys(string? keys, int delay, CancellationToken cancellationToken);
 }
 
@@ -123,9 +125,11 @@ public partial class EventSimulatorService(
     }
 
     /// <summary>
-    /// TODO
+    /// Taps the keys in order. Modifier keys are held down until the next non-modifier key has
+    /// been pressed, so a sequence like "ctrl+c" is sent as a chord; anything still held at the
+    /// end of the sequence is released in reverse order.
     /// </summary>
-    /// <param name="keys"></param>
+    /// <param name="keys">Keys to be tapped</param>
     public void TapKeys(string? keys)
     {
         var parsed = ParseKeys(keys);
@@ -184,11 +188,12 @@ public partial class EventSimulatorService(
     }
 
     /// <summary>
-    /// TODO
+    /// Taps the keys in order like <see cref="TapKeys(string?)"/>, waiting <paramref name="delay"/>
+    /// between key presses and stopping early when <paramref name="cancellationToken"/> is cancelled.
     /// </summary>
-    /// <param name="keys"></param>
+    /// <param name="keys">Keys to be tapped</param>
     /// <param name="delay">Optional delay between key presses</param>
-    /// <param name="cancellationToken"></param>
+    /// <param name="cancellationToken">Stops the remaining taps when cancelled</param>
     public void TapKeys(string? keys, int delay, CancellationToken cancellationToken)
     {
         var parsed = ParseKeys(keys);

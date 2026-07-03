@@ -34,8 +34,7 @@ public class WineProcessMatchingTests
             Checked = @checked,
         };
 
-    private static NewMouseHookEventArgs Event() =>
-        new(YMouseButton.MouseButton4, 0, 0, null);
+    private static NewMouseHookEventArgs Event() => new(YMouseButton.MouseButton4, 0, 0, null);
 
     private static bool ShouldSkip(string foreground, ProfileVm profile)
     {
