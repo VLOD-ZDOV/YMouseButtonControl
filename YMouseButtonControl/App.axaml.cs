@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Avalonia;
@@ -45,7 +46,7 @@ public partial class App : Application
     {
         var configuration = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
             .Build();
 
         // Resolve the database and log file to an absolute, per-user, writable location.
@@ -64,7 +65,20 @@ public partial class App : Application
             dataDirectory
         );
 
+        // The default host uses the current working directory as its content root and watches
+        // appsettings.json for changes. On Linux that watcher is recursive, so when the app is
+        // started with "/" (or $HOME) as its working directory it exhausts the inotify watch limit.
+        // Pin the content root to the app directory and disable config reloading.
         var host = Host.CreateDefaultBuilder()
+            .UseContentRoot(AppContext.BaseDirectory)
+            .ConfigureHostConfiguration(hc =>
+                hc.AddInMemoryCollection(
+                    new Dictionary<string, string?>
+                    {
+                        ["hostBuilder:reloadConfigOnChange"] = "false",
+                    }
+                )
+            )
             .ConfigureServices(services =>
             {
                 services.UseMicrosoftDependencyResolver();
